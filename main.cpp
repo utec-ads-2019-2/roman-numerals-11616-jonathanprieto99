@@ -1,58 +1,38 @@
 #include <iostream>
-#include <string>
 #include <vector>
+#include <map>
+
 using namespace std;
 
-string input;
+int size = 13;
+vector <string> romanos = {"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
+vector<int> arabicos = {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
 
-const string romanos[13]={"I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M"};
-const int arabicos[13]={1,4,5,9,10,40,50,90,100,400,500,900,1000};
-vector<string> respuesta;
+int main() {
+    map<string, string> lista;
+    for (int i = 1; i < 4000; i++) {
+        int itactual = i;
+        string resultadoromano;
+        for (int j = romanos.size() - 1; j >= 0 and itactual; --j) {
 
-int respuestaarabica;
-
-    bool checktype(string input)
-    {
-        return (atoi(input.c_str()));
-    }
-
-    void build_list(string input){
-        for(int n=1; n<4000; n++){
-            int temp=n;
-            string romano;
-            for (int i = 12; i > 0 and temp ; --i) {
-                while(temp>=arabicos[i]){
-                    romano = romanos[i]+romano;
-                    temp = temp-arabicos[i];
-                    //cout<<temp<<endl;
-                    //cout<<romano<<endl;
-                }
+            while (itactual >= arabicos[j]) {
+                resultadoromano = resultadoromano + romanos[j];
+                itactual = itactual - arabicos[j];
             }
-            if(checktype(input)){
-                respuesta.push_back(romano);
-            }
-            else{
-                respuestaarabica=temp;
-                cout<<respuestaarabica<<endl;
-            }
+
         }
-
-        if(checktype(input)){
-            cout<<respuesta[5]<<endl;
-            //for (int i = 0; i < respuesta.size() ; ++i) {
-                //cout<<respuesta[i];
-            }
-        else{
-            cout<<respuestaarabica<<endl;
-        }
+        char input[99];
+        sprintf (input, "%d", i);
+        lista[input] = resultadoromano;
+        lista[resultadoromano] = input;
 
     }
 
-int main(){
-        while(cin>>input){
-            build_list(input);
-        }
+    char input[99];
 
+    while (cin>>input) {
+        cout<<lista[input]<<endl;
+    }
     return 0;
 }
 
